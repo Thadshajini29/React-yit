@@ -1,21 +1,15 @@
 import React from 'react'
 import Student from './components/student/Student.js'
+import Subject from './components/student/subject/Subject.js'
 export default function App() {
   return (
     <div>
-      <Student>my subject</Student>
-      <Student>
-        <p>Maths</p>
-        <p>English</p>
-      </Student>
-      <Student>
-        <ol>
-          <li>Tamil</li>
-          <li>Science</li>
-        </ol>
-      </Student>
-      <Student>my subject</Student>
-
+      <Student fname="Thadshajini" lname="Thadsha" grade="10B"><Subject/></Student>
+      <hr/>
+      <Student fname="Kopitha" lname="Kopi" grade="11B"><Subject/></Student>
+      <hr/>
+      <Student fname="Archchna" lname="Jena" grade="10A"><Subject/></Student>
+      <hr/>
     </div>
   )
 }
