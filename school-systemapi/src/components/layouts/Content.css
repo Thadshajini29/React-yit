@@ -1,0 +1,19 @@
+.content {
+    margin-top: 60px;
+    margin-left: 220px;
+    padding: 30px;
+    background-color: #f3f4f6;
+    min-height: calc(100vh - 60px);
+}
+
+.content h1 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    color: #111827;
+}
+
+.content p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #374151;
+}
