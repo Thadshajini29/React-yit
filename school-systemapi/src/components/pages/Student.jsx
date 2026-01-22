@@ -13,7 +13,7 @@ function Student() {
             <h2>Student List</h2>
             {student.map(student => (
                 <div key={student.id} style={{ marginBottom: "8px" }}>
-                    <Link to={`/Student/${student.id}`}>
+                    <Link to={`/student/${student.id}`}>
                         {student.father_name} {student.student_name}
                     </Link>
                 </div>
