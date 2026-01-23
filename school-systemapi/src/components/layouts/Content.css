@@ -1,19 +1,71 @@
-.content {
-    margin-top: 60px;
-    margin-left: 220px;
-    padding: 30px;
-    background-color: #f3f4f6;
-    min-height: calc(100vh - 60px);
+.content form {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.content h1 {
-    font-size: 30px;
-    margin-bottom: 15px;
-    color: #111827;
+.content form .row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.content p {
-    font-size: 17px;
-    line-height: 1.7;
-    color: #374151;
+.content form .col-md-6,
+.content form .col-md-4 {
+  flex: 1;
+  min-width: 200px;
+}
+
+.content form label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.content form input,
+.content form select,
+.content form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  margin-bottom: 15px;
+  transition: border 0.3s ease;
+}
+
+.content form input:focus,
+.content form select:focus,
+.content form textarea:focus {
+  border-color: #1e40af;
+  outline: none;
+}
+
+.content form .form-check {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.content form .form-check input {
+  margin-right: 5px;
+}
+
+.content form .btn {
+  width: 100%;
+  padding: 12px 0;
+  border: none;
+  background-color: #2563eb;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.content form .btn:hover {
+  background-color: #1e40af;
 }

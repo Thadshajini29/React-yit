@@ -1,14 +1,19 @@
-import React from 'react'
-import './Sidebar.css'
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Sidebar.css";
 
 export default function Sidebar() {
   return (
-    <div>
-        <div className="sidebar">
-            <div className='link'>Students</div>
-            <div className='link'>Subject</div>
-            <div className='link'>Grade</div>
-        </div>
+    <div className="sidebar">
+      <Link to="/students" className="link">
+        Students
+      </Link>
+      <Link to="/subjects" className="link">
+        Subjects
+      </Link>
+      <Link to="/grades" className="link">
+        Grades
+      </Link>
     </div>
-  )
+  );
 }
