@@ -13,6 +13,7 @@ export default function Mainindex() {
         <Routes>
           <Route path="students" element={<StudentIndex />} />
           <Route path="student/create" element={<StudentCreate />} />
+          
         </Routes>
       </div>
     </div>

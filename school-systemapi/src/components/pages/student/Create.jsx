@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./Student.css";
 
 export default function StudentCreate() {
+  const navigate = useNavigate();
+
   const initialState = {
     student_name: "",
     father_name: "",
@@ -12,78 +16,66 @@ export default function StudentCreate() {
     gender: "",
     telephone_no: "",
     address: "",
-    // image_id: null,
   };
 
   const [formdata, setFormdata] = useState(initialState);
   const [grades, setGrades] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
     axios
-      .get("http://127.0.0.1:8000/api/grade")
+      .get("http://127.0.0.1:8000/api/grade", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => setGrades(res.data))
-      .catch((err) => console.error("Error fetching grades:", err));
+      .catch((err) => console.error("Grade fetch error:", err));
   }, []);
 
-
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "image_id") {
-      setFormdata({ ...formdata, image_id: files[0] });
-    } else {
-      setFormdata({ ...formdata, [name]: value });
-    }
+    setFormdata({ ...formdata, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("Submitting...");
+    setLoading(true);
+    setMessage("");
+
+    const token = localStorage.getItem("token");
 
     try {
-      const data = new FormData();
-      for (const key in formdata) {
-        if (formdata[key] !== null) {
-          data.append(key, formdata[key]);
-        }
-      }
-
-      const response = await axios.post(
+      await axios.post(
         "http://127.0.0.1:8000/api/student",
-        data,
+        formdata,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
-      setMessage("Student registered successfully!");
-      alert("Registration Successful!");
+      alert("Student registered successfully!");
       setFormdata(initialState);
+      navigate("/students");
+
     } catch (error) {
-      console.error("Error submitting form:", error);
-      const errorMsg =
-        error.response?.data?.message || "Submission failed.";
-      setMessage(errorMsg);
-      alert(errorMsg);
+      console.error(error);
+      setMessage(error.response?.data?.message || "Submission failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div className="card shadow p-4">
-        <h1 className="text-center mb-4">Create Student</h1>
+    <div className="main-content">
+      <div className="student-card">
+        <h2 className="mb-4">Create Student</h2>
 
-        {message && (
-          <div
-            className={`alert ${
-              message.toLowerCase().includes("success")
-                ? "alert-success"
-                : "alert-danger"}`} >
-            {message}
-          </div>
-        )}
+        {message && <div className="alert alert-danger">{message}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="row">
@@ -114,7 +106,7 @@ export default function StudentCreate() {
 
           <div className="row">
             <div className="col-md-4 mb-3">
-              <label className="form-label">Admission Number</label>
+              <label className="form-label">Admission No</label>
               <input
                 type="text"
                 name="admission_no"
@@ -134,17 +126,17 @@ export default function StudentCreate() {
                 onChange={handleChange}
                 required
               >
-                <option value="">Select a grade</option>
-                {grades.map((grade) => (
-                  <option key={grade.id} value={grade.id}>
-                    {grade.grade_name}
+                <option value="">Select Grade</option>
+                {grades.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    {g.grade_name}
                   </option>
                 ))}
               </select>
             </div>
 
             <div className="col-md-4 mb-3">
-              <label className="form-label">NIC Number</label>
+              <label className="form-label">NIC No</label>
               <input
                 type="text"
                 name="nic_no"
@@ -169,35 +161,38 @@ export default function StudentCreate() {
             </div>
 
             <div className="col-md-6 mb-3">
-              <label className="form-label d-block">Gender</label>
-              <div className="form-check form-check-inline">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  checked={formdata.gender === "male"}
-                  onChange={handleChange}
-                  className="form-check-input"
-                  required
-                />
-                <label className="form-check-label">Male</label>
-              </div>
-              <div className="form-check form-check-inline">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  checked={formdata.gender === "female"}
-                  onChange={handleChange}
-                  className="form-check-input"
-                />
-                <label className="form-check-label">Female</label>
+              <label className="form-label">Gender</label>
+              <div>
+                <div className="form-check form-check-inline">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    className="form-check-input"
+                    checked={formdata.gender === "male"}
+                    onChange={handleChange}
+                    required
+                  />
+                  <label className="form-check-label">Male</label>
+                </div>
+
+                <div className="form-check form-check-inline">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    className="form-check-input"
+                    checked={formdata.gender === "female"}
+                    onChange={handleChange}
+                  />
+                  <label className="form-check-label">Female</label>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Telephone Number</label>
+            <label className="form-label">Telephone</label>
             <input
               type="tel"
               name="telephone_no"
@@ -220,21 +215,13 @@ export default function StudentCreate() {
             ></textarea>
           </div>
 
-          {/* <div className="mb-3">
-            <label className="form-label">Image Upload</label>
-            <input
-              type="file"
-              name="image_id"
-              className="form-control"
-              onChange={handleChange}
-            />
-          </div> */}
-
-          <div className="d-grid">
-            <button type="submit" className="btn btn-primary btn-lg">
-              Submit Registration
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="btn btn-primary w-100"
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Submit Registration"}
+          </button>
         </form>
       </div>
     </div>
